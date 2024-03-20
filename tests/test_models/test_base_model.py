@@ -24,8 +24,10 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
-            pass
+        except FileNotFoundError:
+            print("File 'file.json' not found.")
+        except PermissionError:
+            print("Permission denied to delete 'file.json'.")
 
     def test_default(self):
         """ """
