@@ -13,7 +13,8 @@ class FileStorage:
         if cls is None:
             return FileStorage.__objects
         else:
-            return {key: obj for key, obj in FileStorage.__objects.items() if isinstance(obj, cls)}
+            return {key: obj for key, obj in FileStorage.__objects.items()
+                    if isinstance(obj, cls)}
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -21,9 +22,12 @@ class FileStorage:
         FileStorage.__objects[key] = obj
 
     def save(self):
-        """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
+        """serialize the file path to JSON file path
+        """
+        temp = {}
+        for key, obj in FileStorage.__objects.items():
+            temp[key] = obj.to_dict()
+        with open(FileStorage.__file_path, 'w', encoding="UTF-8") as f:
             json.dump(temp, f)
 
     def reload(self):
